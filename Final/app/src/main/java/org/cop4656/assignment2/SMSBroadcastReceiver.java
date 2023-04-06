@@ -25,6 +25,8 @@ public class SMSBroadcastReceiver extends BroadcastReceiver
 
                 for (int i = 0; i < pdus.length; i++)
                 {
+                    //modify as needed
+
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdus[i], format);
                     String sender = currentMessage.getDisplayOriginatingAddress();
                     String message = currentMessage.getDisplayMessageBody();

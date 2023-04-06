@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
+        //Instantiate database here, database will have two tables, one for keywords and one for texts
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -50,7 +52,9 @@ public class MainActivity extends AppCompatActivity
     {
         if (bookMark != null)
         {
-            if (validateMessage(bookMark))
+            //check if the message contains any words in the database and if it does add it to the database
+
+            /*if (validateMessage(bookMark))
             {
                 String url = bookMark.substring(6);
                 URLsViewModel sharedViewModel = new ViewModelProvider(this).get(URLsViewModel.class);
@@ -72,12 +76,19 @@ public class MainActivity extends AppCompatActivity
             else
             {
                 Toast.makeText(this, "No valid bookmark was found in SMS!", Toast.LENGTH_LONG).show();
-            }
+            }*/
         }
     }
 
     private boolean validateMessage(String bookMark)
     {
+        //modify to check if text contains in database
         return bookMark.startsWith("booky:");
+    }
+
+    public void AddWord()
+    {
+        //add word to database
+        //display toast if it contains a space or the word is already in the database
     }
 }

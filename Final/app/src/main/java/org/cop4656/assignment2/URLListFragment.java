@@ -37,7 +37,9 @@ public class URLListFragment extends Fragment
 
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        super.onViewCreated(view, savedInstanceState);
+        //Pull from database and display all of the texts in it
+
+        /*super.onViewCreated(view, savedInstanceState);
         ListView listView = view.findViewById(R.id.URListView);
         URLsViewModel sharedViewModel = new ViewModelProvider(requireActivity()).get(URLsViewModel.class);
         ArrayList<String> listOfURLs = sharedViewModel.getWrappedListOfUrls().getValue();
@@ -51,6 +53,7 @@ public class URLListFragment extends Fragment
                 String urlClicked = listOfURLs.get(position);
                 sharedViewModel.setWrappedUrlClicked(urlClicked);
             }
-        });
+        });*/
+
     }
 }
