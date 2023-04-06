@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "358919756044",
+    "firebase_url": "https://cop4656-final-default-rtdb.firebaseio.com",
     "project_id": "cop4656-final",
     "storage_bucket": "cop4656-final.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:358919756044:android:28328744129ad624391129",
+        "mobilesdk_app_id": "1:358919756044:android:e3dd5397c14c9e54391129",
         "android_client_info": {
           "package_name": "org.cop4656.assignment2"
         }

@@ -6,12 +6,19 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.cop4656.assignment2.model.URLsViewModel;
 
@@ -38,6 +45,22 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         String bookMark = intent.getStringExtra("sms");
         addURLAndDisplayWebpage(bookMark);
+
+        Button button = (Button)findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                String message = ((TextView)findViewById(R.id.newWord)).getText().toString();
+                if(!message.contains(" ")) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("keywords");
+
+                    myRef.setValue(message);
+                }
+                else
+                {}
+            }
+        });
     }
 
     @Override
@@ -86,9 +109,5 @@ public class MainActivity extends AppCompatActivity
         return bookMark.startsWith("booky:");
     }
 
-    public void AddWord()
-    {
-        //add word to database
-        //display toast if it contains a space or the word is already in the database
-    }
+
 }

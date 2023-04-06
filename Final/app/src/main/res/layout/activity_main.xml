@@ -14,13 +14,13 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/newWord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:text="Your Word" />
 
         <Button
             android:id="@+id/button"
@@ -28,15 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Button"
-            android:onClick="AddWord"/>
+            />
     </LinearLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/urlListFragment"
-        android:name="org.cop4656.assignment2.URLListFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout="@layout/url_list_fragment" />
+
 
 </LinearLayout>
