@@ -1,5 +1,6 @@
 package org.cop4656.assignment2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,16 +10,21 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.cop4656.assignment2.model.URLsViewModel;
 
@@ -26,7 +32,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
-
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,17 +54,42 @@ public class MainActivity extends AppCompatActivity
 
         Button button = (Button)findViewById(R.id.button);
 
-        button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view) {
-                String message = ((TextView)findViewById(R.id.newWord)).getText().toString();
-                if(!message.contains(" ")) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("keywords");
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    myRef.setValue(message);
-                }
-                else
-                {}
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        long count = dataSnapshot.child("keywords").getChildrenCount();
+                        int currentIndex = 0;
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            if (childSnapshot.child(Integer.toString(currentIndex)).getValue(String.class).toLowerCase().contains(((EditText) findViewById(R.id.newWord)).getText().toString().toLowerCase())) {
+                                ((EditText) findViewById(R.id.newWord)).setTextColor(Color.RED);
+                                Context context = getApplicationContext();
+                                CharSequence text = "Keyword already exists";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                return;
+                            }
+                            currentIndex++;
+                        }
+                        String s = ((EditText)findViewById(R.id.newWord)).getText().toString();
+                        databaseRef.child("keywords").child(Integer.toString((int) count)).setValue(((EditText) findViewById(R.id.newWord)).getText().toString());
+                        ((EditText) findViewById(R.id.newWord)).setTextColor(Color.GRAY);
+                        Context context = getApplicationContext();
+                        CharSequence text = "Question added";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
     }
@@ -77,36 +108,32 @@ public class MainActivity extends AppCompatActivity
         {
             //check if the message contains any words in the database and if it does add it to the database
 
-            /*if (validateMessage(bookMark))
+            if (validateMessage(bookMark))
             {
-                String url = bookMark.substring(6);
-                URLsViewModel sharedViewModel = new ViewModelProvider(this).get(URLsViewModel.class);
-                ArrayList<String> listOfUrls = sharedViewModel.getWrappedListOfUrls().getValue();
-                if (listOfUrls.size() < 5)
+                String url = bookMark;
+                DataSnapshot d = databaseRef.get().getResult();
+                ArrayList<String> listOfUrls = new ArrayList<String>();
+                for(DataSnapshot childSnapshot : d.getChildren())
                 {
-                    listOfUrls.add(url);
+                    listOfUrls.add(childSnapshot.getValue(String.class));
                 }
-                else
-                {
-                    listOfUrls.remove(4);
-                    listOfUrls.add(url);
-                }
+                listOfUrls.add(url);
                 ListView listView = findViewById(R.id.URListView);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOfUrls);
                 listView.setAdapter(adapter);
-                sharedViewModel.setWrappedUrlClicked(url);
             }
             else
             {
-                Toast.makeText(this, "No valid bookmark was found in SMS!", Toast.LENGTH_LONG).show();
-            }*/
+                Toast.makeText(this, "No valid keyword was found in SMS!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     private boolean validateMessage(String bookMark)
     {
-        //modify to check if text contains in database
-        return bookMark.startsWith("booky:");
+
+
+        return false;
     }
 
 

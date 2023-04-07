@@ -11,12 +11,18 @@ import android.widget.ListView;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.cop4656.assignment2.model.URLsViewModel;
 
 import java.util.ArrayList;
 
 public class URLListFragment extends Fragment
 {
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
     public URLListFragment()
     {
         // Required empty public constructor
@@ -39,21 +45,17 @@ public class URLListFragment extends Fragment
     {
         //Pull from database and display all of the texts in it
 
-        /*super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
         ListView listView = view.findViewById(R.id.URListView);
-        URLsViewModel sharedViewModel = new ViewModelProvider(requireActivity()).get(URLsViewModel.class);
-        ArrayList<String> listOfURLs = sharedViewModel.getWrappedListOfUrls().getValue();
+        DataSnapshot d = databaseRef.child("texts").get().getResult();
+        ArrayList<String> listOfURLs = new ArrayList<String>();
+        for(DataSnapshot childSnapshot : d.getChildren())
+        {
+           listOfURLs.add(childSnapshot.getValue(String.class));
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listOfURLs);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                String urlClicked = listOfURLs.get(position);
-                sharedViewModel.setWrappedUrlClicked(urlClicked);
-            }
-        });*/
+
 
     }
 }

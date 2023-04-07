@@ -3,17 +3,29 @@ package org.cop4656.assignment2;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SMSBroadcastReceiver extends BroadcastReceiver
 {
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
     @Override
     public void onReceive(Context context, Intent intent)
     {
+
         Bundle bundle = intent.getExtras();
 
         if (intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
