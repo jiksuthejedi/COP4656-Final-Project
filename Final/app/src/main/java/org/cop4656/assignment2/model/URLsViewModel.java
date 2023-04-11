@@ -16,11 +16,7 @@ public class URLsViewModel extends ViewModel
     {
         listOfUrls = new ArrayList<>();
         wrappedListOfUrls = new MutableLiveData<>();
-        listOfUrls.add("https://developer.android.com");
-        listOfUrls.add("https://firebase.google.com/");
-        listOfUrls.add("https://www.fsu.edu/");
         wrappedListOfUrls.setValue(listOfUrls);
-        urlClicked = "https://developer.android.com";
         wrappedUrlClicked = new MutableLiveData<>();
         wrappedUrlClicked.setValue(urlClicked);
     }

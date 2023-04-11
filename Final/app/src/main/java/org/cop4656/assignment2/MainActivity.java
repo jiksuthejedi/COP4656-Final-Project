@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -54,6 +57,11 @@ public class MainActivity extends AppCompatActivity
 
         Button button = (Button)findViewById(R.id.button);
 
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(0, URLListFragment.class, null);
+        transaction.addToBackStack(null);
+        transaction.commit();
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +100,8 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+        Intent i = new Intent(MainActivity.this,URLListFragment.class);
+
     }
 
     @Override
@@ -108,10 +118,10 @@ public class MainActivity extends AppCompatActivity
         {
             //check if the message contains any words in the database and if it does add it to the database
 
-            if (validateMessage(bookMark))
+            /*if (validateMessage(bookMark))
             {
                 String url = bookMark;
-                DataSnapshot d = databaseRef.get().getResult();
+                DataSnapshot d = databaseRef.child("texts").get().getResult();
                 ArrayList<String> listOfUrls = new ArrayList<String>();
                 for(DataSnapshot childSnapshot : d.getChildren())
                 {
@@ -125,7 +135,7 @@ public class MainActivity extends AppCompatActivity
             else
             {
                 Toast.makeText(this, "No valid keyword was found in SMS!", Toast.LENGTH_LONG).show();
-            }
+            }*/
         }
     }
 
@@ -133,7 +143,7 @@ public class MainActivity extends AppCompatActivity
     {
 
 
-        return false;
+        return true;
     }
 
 
