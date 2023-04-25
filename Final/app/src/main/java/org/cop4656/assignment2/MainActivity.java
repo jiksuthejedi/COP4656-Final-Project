@@ -120,7 +120,10 @@ public class MainActivity extends AppCompatActivity
         {
             DatabaseReference d = databaseRef.child("texts");
             DatabaseReference g = d.push();
-            Task<DataSnapshot> t = databaseRef.child("keywords").get();
+
+            DatabaseReference k = databaseRef.child("keywords");
+            Task<DataSnapshot> t = k.get();
+            while(!t.isComplete()){}
             DataSnapshot i = t.getResult();
 
             int currentIndex = 0;
