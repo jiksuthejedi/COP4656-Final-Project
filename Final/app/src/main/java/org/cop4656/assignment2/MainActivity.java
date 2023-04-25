@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             int currentIndex = 0;
             boolean has = false;
             for (DataSnapshot childSnapshot : i.getChildren()) {
-                if (bookMark.contains(childSnapshot.child(Integer.toString(currentIndex)).getValue(String.class).toLowerCase())) {
+                if (bookMark.toLowerCase().contains(childSnapshot.getValue().toString().toLowerCase())) {
                     has = true;
                 }
                 currentIndex++;
