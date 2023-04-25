@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -116,12 +118,36 @@ public class MainActivity extends AppCompatActivity
     {
         if (bookMark != null)
         {
+            DatabaseReference d = databaseRef.child("texts");
+            DatabaseReference g = d.push();
+            Task<DataSnapshot> t = databaseRef.child("keywords").get();
+            DataSnapshot i = t.getResult();
+
+            int currentIndex = 0;
+            boolean has = false;
+            for (DataSnapshot childSnapshot : i.getChildren()) {
+                if (bookMark.contains(childSnapshot.child(Integer.toString(currentIndex)).getValue(String.class).toLowerCase())) {
+                    has = true;
+                }
+                currentIndex++;
+            }
+            if(has)
+                g.setValue(bookMark);
+            else
+            {
+                Context context = getApplicationContext();
+                CharSequence text = "No keywords in text";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return;
+            }
+
             //check if the message contains any words in the database and if it does add it to the database
 
             /*if (validateMessage(bookMark))
             {
-                String url = bookMark;
-                DataSnapshot d = databaseRef.child("texts").get().getResult();
+
                 ArrayList<String> listOfUrls = new ArrayList<String>();
                 for(DataSnapshot childSnapshot : d.getChildren())
                 {
