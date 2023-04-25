@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(0, URLListFragment.class, null);
+        transaction.add(R.id.fragment_container, URLListFragment.class, null);
         transaction.addToBackStack(null);
         transaction.commit();
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {

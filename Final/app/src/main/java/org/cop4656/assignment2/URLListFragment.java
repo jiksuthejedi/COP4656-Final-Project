@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.cop4656.assignment2.model.URLsViewModel;
 
@@ -29,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 public class URLListFragment extends Fragment
 {
-    DatabaseReference databaseRef;
+    private DatabaseReference databaseRef;
 
     public URLListFragment()
     {
@@ -53,29 +56,33 @@ public class URLListFragment extends Fragment
 
 
 
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         databaseRef = FirebaseDatabase.getInstance().getReference();
 
+        ListView listView = view.findViewById(R.id.URListView);
         DatabaseReference d1 = databaseRef.child("texts");
-        Task<DataSnapshot> t = d1.get();
-        while(! t.isSuccessful())
-        {}
-        ListView listView = (ListView) view.findViewById(R.id.URListView);
-                DataSnapshot d = t.getResult();
-                ArrayList<String> listOfURLs = new ArrayList<String>();
-                for(DataSnapshot childSnapshot : d.getChildren())
-                {
+
+        d1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> listOfURLs = new ArrayList<>();
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     listOfURLs.add(childSnapshot.getValue(String.class));
                 }
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listOfURLs);
-                adapter.notifyDataSetChanged();
                 listView.setAdapter(adapter);
+            }
 
-        //Pull from database and display all of the texts in it
-
-
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle possible errors
+            }
+        });
     }
+
+
+
 }
