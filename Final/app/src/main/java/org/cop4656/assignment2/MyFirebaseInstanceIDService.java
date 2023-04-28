@@ -29,37 +29,6 @@ public class MyFirebaseInstanceIDService extends MyFirebaseMessagingService {
     }
 
     private void sendRegistrationToServer(String token) {
-        new Thread(() -> {
-            try {
-                URL url = new URL("https://cop4656-final-default-rtdb.firebaseio.com/texts");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true);
-                conn.setDoInput(true);
 
-                // Send the token as a JSON payload
-                String jsonInputString = "{\"token\":\"" + token + "\"}";
-                OutputStream os = new BufferedOutputStream(conn.getOutputStream());
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
-                os.flush();
-                os.close();
-
-                // Read the response
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                StringBuilder response = new StringBuilder();
-                String responseLine;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-                Log.d(TAG, "Server response: " + response.toString());
-
-                conn.disconnect();
-            } catch (Exception e) {
-                Log.e(TAG, "Error sending token to server", e);
-            }
-        }).start();
     }
 }
