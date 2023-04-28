@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
                         databaseRef.child("keywords").child(Integer.toString((int) count)).setValue(((EditText) findViewById(R.id.newWord)).getText().toString());
                         ((EditText) findViewById(R.id.newWord)).setTextColor(Color.GRAY);
                         Context context = getApplicationContext();
-                        CharSequence text = "Question added";
+                        CharSequence text = "Keyword Added";
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
