@@ -4,6 +4,10 @@ import android.app.Service;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import java.io.BufferedOutputStream;
@@ -29,6 +33,14 @@ public class MyFirebaseInstanceIDService extends MyFirebaseMessagingService {
     }
 
     private void sendRegistrationToServer(String token) {
+        // Get the current user's UID from Firebase Authentication
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
 
+            // Send the token to the Firebase server using FCM
+            FirebaseMessaging.getInstance().subscribeToTopic(uid);
+        }
     }
+
 }
